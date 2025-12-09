@@ -64,9 +64,9 @@ JWT_ALGORITHM="YOUR_JWT_ALGORITHM"
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 # Databases
-AUTH_DATABASE_URL="YOUR_AUTH_DATABASE_URL"
+1. AUTH_DATABASE_URL="YOUR_AUTH_DATABASE_URL"
 - like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Auth"
-CHATBOT_DATABASE_URL="YOUR_CHATBOT_DATABASE_URL"
+2.CHATBOT_DATABASE_URL="YOUR_CHATBOT_DATABASE_URL"
 - like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Chat"
 
 ## Ports
@@ -95,8 +95,8 @@ CHATBOT_SERVICE_PORT=8002
    Chatbot Service (Port 8002):- uvicorn chatbot_service.main:app --reload --port 8002
 
 ## API Testing Using Postman
-1. Register User (Auth Service)
-POST
+1. Register User (Auth Service):-
+- POST
 http://localhost:8001/register
 
 Body (JSON):
@@ -105,8 +105,8 @@ Body (JSON):
   "password": "123456"
 }
 
-2. Login User
-POST
+2. Login User:-
+- POST
 http://localhost:8001/login
 
 Body (JSON):
@@ -122,8 +122,8 @@ Response:
 }
 Copy this token for protected API calls.
 
-3. Ask the Chatbot (Main Feature)
-POST
+3. Ask the Chatbot (Main Feature):-
+- POST
 http://localhost:8002/chat/query
 
 Headers:
