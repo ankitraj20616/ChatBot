@@ -33,7 +33,7 @@ The application follows a microservices architecture consisting of the following
 - Postman-ready API testing
 
 # Technology Stack
-- Component	-> Technology
+Component	-> Technology
 1.Backend Framework ->	FastAPI (Python)
 2.Database ->	PostgreSQL
 3.ORM ->	SQLAlchemy
