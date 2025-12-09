@@ -1,134 +1,180 @@
-# ChatBot
-# LLM-Powered Chatbot with FastAPI & PostgreSQL
+## ChatBot — LLM-Powered Chatbot with FastAPI, PostgreSQL, and Docker
 
-This project is a **backend-focused implementation** of an **LLM-powered chatbot** using **FastAPI**, **PostgreSQL**, and a **Groq-hosted Large Language Model (LLM)** such as **Llama 3.1** or **Mistral-7B**.  
+This project is a production-ready, microservices-based backend system for an LLM-powered chatbot built using FastAPI, PostgreSQL, and a Groq-hosted Large Language Model (LLM) such as Llama 3.1 or Mistral-7B.
 
-The system accepts **natural language queries**, converts them into **SQL using the LLM**, executes the query on a **PostgreSQL database**, and returns the results to the user.
+The system accepts natural language queries, converts them into safe SQL queries using an LLM, executes them on a PostgreSQL database, and returns structured results via secure APIs. The entire platform is fully containerized with Docker and is deployable via Docker Hub.
 
-Instead of a React frontend, **Postman-based API testing instructions** are provided.
+# System Architecture
+The application follows a microservices architecture consisting of the following components:
 
----
+# Auth Service: Handles user registration, login, and JWT token generation
+- Chatbot Service: Converts natural language queries into SQL using an LLM and executes them
+- PostgreSQL (Auth Database): Stores user authentication data
+- PostgreSQL (Chatbot Database): Stores customer-related data
+- Each service runs in an isolated Docker container and communicates over an internal Docker network.
 
-## Features
+# Key Features
+- Natural Language to SQL conversion using a Groq-hosted LLM
+- Secure FastAPI-based backend
+- PostgreSQL database integration using SQLAlchemy ORM
+- JWT-based authentication and authorization
+- Safe execution of read-only (SELECT) queries
+-Structured logging of:
+    - User queries
+    - Generated SQL statements
+    - Execution errors
+- Comprehensive error handling for:
+    - Invalid queries
+    - SQL execution failures
+    - Unauthorized access
+    - Token expiration
+- Fully Dockerized services
+- Docker Hub-based image distribution
+- Postman-ready API testing
 
-- Natural Language → SQL conversion using **Groq LLM**
-- Secure **FastAPI Backend**
-- **PostgreSQL** database integration
-- Dynamic SQL execution from user queries
-- **Token-based Authentication (JWT)**
-- Logging of:
-  - User queries
-  - Generated SQL queries
-  - Execution errors
-- Error handling for:
-  - Invalid queries
-  - SQL execution failures
-  - Unauthorized access
-- Environment variable support using **`.env`**
-- Postman API testing instructions
-
----
-
-## Tech Stack
-
-| Component | Technology |
-|----------|------------|
-| Backend | FastAPI (Python) |
-| Database | PostgreSQL |
-| LLM | Groq (Llama 3.1 / Mistral-7B) |
-| Security | JWT Authentication |
-| API Testing | Postman |
-| ORM | SQLAlchemy |
-
----
-
-## Database Schema
-
-The project uses a **customer database** with the following schema:
-
-```sql
+# Technology Stack
+- Component	-> Technology
+1.Backend Framework ->	FastAPI (Python)
+2.Database ->	PostgreSQL
+3.ORM ->	SQLAlchemy
+4.LLM Provider ->	Groq (Llama 3.1 / Mistral-7B)
+5.Authentication ->	JWT
+6.Containerization ->	Docker, Docker Compose
+7.API Testing ->	Postman
+8.Database Schema :
 CREATE TABLE customers (
     customer_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     gender TEXT NOT NULL,
     location TEXT NOT NULL
 );
-```
-## Create a .env file in the backend root directory with the following:
-# Groq
-GROQ_API_KEY="YOUR_GROQ_API_KEY"
 
-# JWT
-JWT_SECRET_KEY="YOUR_JWT_SECRET_KEY"
-JWT_ALGORITHM="YOUR_JWT_ALGORITHM"
-ACCESS_TOKEN_EXPIRE_MINUTES=60
+## Running the Application Using Docker (Recommended)
+This is the recommended production and client deployment method.
 
-# Databases
-1. AUTH_DATABASE_URL="YOUR_AUTH_DATABASE_URL" , like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Auth"
-2.CHATBOT_DATABASE_URL="YOUR_CHATBOT_DATABASE_URL", like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Chat"
+# Step 1: Install Docker Desktop
+- Download and install Docker Desktop from:
+- https://www.docker.com/products/docker-desktop/
+- Ensure the Docker Engine is running after installation.
 
-## Ports
-AUTH_SERVICE_PORT=8001
-CHATBOT_SERVICE_PORT=8002
+# Step 2: Create Project Directory
+- mkdir chatbot-project
+- cd chatbot-project
+
+# Step 3: Create Environment File
+- Create a file named .env in the project directory with the following content:
+
+# Groq API Key
+- GROQ_API_KEY=PASTE_YOUR_GROQ_KEY_HERE
+
+# JWT Configuration
+- JWT_SECRET_KEY=PASTE_YOUR_SECRET_KEY_HERE
+- JWT_ALGORITHM=HS256
+- ACCESS_TOKEN_EXPIRE_MINUTES=60
+
+# Database URLs (Docker Internal)
+- AUTH_DATABASE_URL=postgresql://postgres:postgres@auth_db:5432/Chatbot_Auth
+- CHATBOT_DATABASE_URL=postgresql://postgres:postgres@chat_db:5432/Chatbot_Chat
+
+# Step 4: Create Docker Compose Configuration
+
+- Create a file named docker-compose.yml with the following content:
+
+services:
+  auth_db:
+    image: postgres:15
+    container_name: auth_db
+    restart: always
+    environment:
+      POSTGRES_DB: Chatbot_Auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+
+  chat_db:
+    image: postgres:15
+    container_name: chat_db
+    restart: always
+    environment:
+      POSTGRES_DB: Chatbot_Chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - chat_db_data:/var/lib/postgresql/data
+
+  auth_service:
+    image: your_dockerhub_username/auth_service:latest
+    container_name: auth_service
+    env_file:
+      - .env
+    depends_on:
+      - auth_db
+    ports:
+      - "8001:8001"
+
+  chatbot_service:
+    image: your_dockerhub_username/chatbot_service:latest
+    container_name: chatbot_service
+    env_file:
+      - .env
+    depends_on:
+      - chat_db
+      - auth_service
+    ports:
+      - "8002:8002"
+
+volumes:
+  auth_db_data:
+  chat_db_data:
 
 
-## How to Run the Project
-1. Clone the Repository:-
-     git clone https://github.com/your-username/your-repo-name.git](https://github.com/ankitraj20616/ChatBot.git
-     cd ChatBot
-2. Create & Activate Virtual Environment:-
-   pipenv install
-   pipenv shell
-3. Install Dependencies
-   pipenv install
-4. Setup PostgreSQL Databases:-
-   CREATE DATABASE Chatbot_Auth;
-   CREATE DATABASE Chatbot_Chat;
-   Ensure credentials match the .env file.
-5. Seed the Customer Database:-
-   python chatbot_service/seed_customers.py
-   This inserts 5+ customer records.
-6. Start the Microservices:-
-   Auth Service (Port 8001):- uvicorn auth_service.main:app --reload --port 8001
-   Chatbot Service (Port 8002):- uvicorn chatbot_service.main:app --reload --port 8002
+- Replace your_dockerhub_username with your actual Docker Hub username.
+
+# Step 5: Start the System
+- docker compose up
+- Docker will automatically pull the required images and start all services.
+
+## API Access Points
+- Service	URL
+  - Auth Service	http://localhost:8001/docs
+  - Chatbot Service	http://localhost:8002/docs
 
 ## API Testing Using Postman
-1. Register User (Auth Service):-
-- POST
+- Register User
+POST
 http://localhost:8001/register
 
-Body (JSON):
+Request Body
 {
   "username": "ankit",
   "password": "123456"
 }
 
-2. Login User:-
-- POST
+- Login User
+POST
 http://localhost:8001/login
 
-Body (JSON):
-{
-  "username": "ankit",
-  "password": "123456"
-}
-
-Response:
+Response
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR...",
   "token_type": "bearer"
 }
-Copy this token for protected API calls.
+Use the returned token for authenticated requests.
 
-3. Ask the Chatbot (Main Feature):-
-- POST
+- Query the Chatbot
+POST
 http://localhost:8002/chat/query
 
-Headers:
+Headers
 Authorization: Bearer YOUR_ACCESS_TOKEN
 Content-Type: application/json
 
-Body (JSON):
+Request Body
 {
   "query": "Show me all female customers from Mumbai"
 }
@@ -152,44 +198,38 @@ Sample Response
   ]
 }
 
-
-## Confirms:
-- LLM converted English → SQL
-- SQL executed on PostgreSQL
-- Data returned successfully
-
-## Sample Test Queries:
+# Sample Queries
 - Show all customers from Delhi
 - List all female customers
 - Show male customers from Bangalore
 - Show all customers
+- Logging
 
-## Logging
-
-The project logs:
+# The system logs the following:
 - User queries
-- SQL generated by the LLM
+- Generated SQL statements
 - SQL execution errors
-- Authentication failures
+- Authentication and authorization failures
 
-## Error Handling
-
-Handled cases:
-- Invalid SQL from LLM
-- Database connection failure
-- Unauthorized access
-- Token expiry
+# Error Handling
+- The application handles the following error conditions:
+- Invalid SQL generated by the LLM
+- Database connection failures
+- Unauthorized access attempts
+- Token expiration
 - Empty result sets
 
-## Notes
+# Notes
+- Backend-focused system with no frontend UI
+- Postman is used as the client interface
+- LLM access is restricted to safe SELECT-only queries
+- Fully containerized deployment
+- Suitable for cloud deployment using Docker
 
-- Backend-focused AI + database project
-- No frontend UI used
-- Postman provided as frontend substitute
-- Secured using JWT
-- LLM restricted to safe SELECT queries only
-
-## Author
+# Author: 
+- Ankit Raj
+- Backend Developer
+- GitHub: https://github.com/ankitraj20616
 
 Ankit Raj
 Backend Developer
