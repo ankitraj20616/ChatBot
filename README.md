@@ -34,14 +34,14 @@ The application follows a microservices architecture consisting of the following
 
 # Technology Stack
 Component	-> Technology
-1.Backend Framework ->	FastAPI (Python)
-2.Database ->	PostgreSQL
-3.ORM ->	SQLAlchemy
-4.LLM Provider ->	Groq (Llama 3.1 / Mistral-7B)
-5.Authentication ->	JWT
-6.Containerization ->	Docker, Docker Compose
-7.API Testing ->	Postman
-8.Database Schema :
+- Backend Framework ->	FastAPI (Python)
+- Database ->	PostgreSQL
+- ORM ->	SQLAlchemy
+- LLM Provider ->	Groq (Llama 3.1 / Mistral-7B)
+- Authentication ->	JWT
+- Containerization ->	Docker, Docker Compose
+- API Testing ->	Postman
+- Database Schema :
 CREATE TABLE customers (
     customer_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
