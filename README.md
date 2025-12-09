@@ -64,10 +64,8 @@ JWT_ALGORITHM="YOUR_JWT_ALGORITHM"
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 # Databases
-1. AUTH_DATABASE_URL="YOUR_AUTH_DATABASE_URL"
-- like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Auth"
-2.CHATBOT_DATABASE_URL="YOUR_CHATBOT_DATABASE_URL"
-- like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Chat"
+1. AUTH_DATABASE_URL="YOUR_AUTH_DATABASE_URL" , like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Auth"
+2.CHATBOT_DATABASE_URL="YOUR_CHATBOT_DATABASE_URL", like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Chat"
 
 ## Ports
 AUTH_SERVICE_PORT=8001
@@ -156,9 +154,9 @@ Sample Response
 
 
 ## Confirms:
-LLM converted English → SQL
-SQL executed on PostgreSQL
-Data returned successfully
+- LLM converted English → SQL
+- SQL executed on PostgreSQL
+- Data returned successfully
 
 ## Sample Test Queries:
 - Show all customers from Delhi
