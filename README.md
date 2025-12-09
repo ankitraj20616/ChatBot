@@ -7,7 +7,7 @@ The system accepts natural language queries, converts them into safe SQL queries
 # System Architecture
 The application follows a microservices architecture consisting of the following components:
 
-# Auth Service: Handles user registration, login, and JWT token generation
+- Auth Service: Handles user registration, login, and JWT token generation
 - Chatbot Service: Converts natural language queries into SQL using an LLM and executes them
 - PostgreSQL (Auth Database): Stores user authentication data
 - PostgreSQL (Chatbot Database): Stores customer-related data
