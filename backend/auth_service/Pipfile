@@ -12,7 +12,8 @@ passlib = {extras = ["bcrypt"], version = "*"}
 pyjwt = "*"
 pydantic = "*"
 pydantic-settings = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
+exceptiongroup = "*"
 
 [dev-packages]
 
