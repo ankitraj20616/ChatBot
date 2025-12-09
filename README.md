@@ -65,11 +65,11 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 # Databases
 AUTH_DATABASE_URL="YOUR_AUTH_DATABASE_URL"
-# like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Auth"
+- like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Auth"
 CHATBOT_DATABASE_URL="YOUR_CHATBOT_DATABASE_URL"
-# like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Chat"
+- like:- "postgresql://postgres:db_password@localhost:5432/Chatbot_Chat"
 
-# Ports
+## Ports
 AUTH_SERVICE_PORT=8001
 CHATBOT_SERVICE_PORT=8002
 
@@ -155,18 +155,18 @@ Sample Response
 }
 
 
-Confirms:
+## Confirms:
 LLM converted English → SQL
 SQL executed on PostgreSQL
 Data returned successfully
 
-Sample Test Queries:
+## Sample Test Queries:
 - Show all customers from Delhi
 - List all female customers
 - Show male customers from Bangalore
 - Show all customers
 
-Logging
+## Logging
 
 The project logs:
 - User queries
@@ -174,7 +174,7 @@ The project logs:
 - SQL execution errors
 - Authentication failures
 
-Error Handling
+## Error Handling
 
 Handled cases:
 - Invalid SQL from LLM
