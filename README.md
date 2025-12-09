@@ -78,61 +78,7 @@ This is the recommended production and client deployment method.
 
 # Step 4: Create Docker Compose Configuration
 
-- Create a file named docker-compose.yml with the following content:
-
-services:
-  auth_db:
-    image: postgres:15
-    container_name: auth_db
-    restart: always
-    environment:
-      POSTGRES_DB: Chatbot_Auth
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - auth_db_data:/var/lib/postgresql/data
-
-  chat_db:
-    image: postgres:15
-    container_name: chat_db
-    restart: always
-    environment:
-      POSTGRES_DB: Chatbot_Chat
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    volumes:
-      - chat_db_data:/var/lib/postgresql/data
-
-  auth_service:
-    image: your_dockerhub_username/auth_service:latest
-    container_name: auth_service
-    env_file:
-      - .env
-    depends_on:
-      - auth_db
-    ports:
-      - "8001:8001"
-
-  chatbot_service:
-    image: your_dockerhub_username/chatbot_service:latest
-    container_name: chatbot_service
-    env_file:
-      - .env
-    depends_on:
-      - chat_db
-      - auth_service
-    ports:
-      - "8002:8002"
-
-volumes:
-  auth_db_data:
-  chat_db_data:
-
-
+- Create a file named docker-compose.yml with the following content: open/visit docker-compose.yml in backend dir.
 - Replace your_dockerhub_username with your actual Docker Hub username.
 
 # Step 5: Start the System
@@ -230,7 +176,3 @@ Sample Response
 - Ankit Raj
 - Backend Developer
 - GitHub: https://github.com/ankitraj20616
-
-Ankit Raj
-Backend Developer
-GitHub: https://github.com/ankitraj20616
